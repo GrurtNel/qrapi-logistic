@@ -1,0 +1,19 @@
+[server]
+host = ""
+port = "3009"
+
+[log]
+log_dir = "./log"
+log_std = "true"
+
+[static]
+upload_dir = "./upload"
+
+[push]
+api_key = "AAAAyQ2ofN0:APA91bEz66dHhehSpnQDpjolBt9EeU9o2ZOi_Tc5Z7slUfQ_CXGH9Ww6sx4cC8bBUgZl01gTXmcW5Cfo84ymLQqfkNi_0NL233MCVFfEDUKkgXPYIXYwdM6mtUvo3aOdGaCGcLSOaEk5"
+
+[db]
+host = "mongodb://heroku_4l0dr45z:h8ipiqtqq8ah8ige8707u85dfj@ds121183.mlab.com:21183/heroku_4l0dr45z"
+uname = "heroku_4l0dr45z"
+password = "Trungyeulen4ever@123"
+name = "heroku_4l0dr45z"
