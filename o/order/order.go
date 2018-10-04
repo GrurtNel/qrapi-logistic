@@ -17,16 +17,17 @@ var orderTable = mongodb.NewTable("order", "prd")
 
 type Order struct {
 	mongodb.Model `bson:",inline"`
-	Name          string      `bson:"name" json:"name"`
-	CustomerID    string      `bson:"customer_id" json:"customer_id"`
-	Quantity      int         `bson:"quantity" json:"quantity"`
-	Deadline      int64       `bson:"deadline" json:"deadline"`
-	Resources     []*Resource `bson:"resources" json:"resources"`
+	Name          string   `bson:"name" json:"name"`
+	CustomerID    string   `bson:"customer_id" json:"customer_id"`
+	Quantity      int      `bson:"quantity" json:"quantity"`
+	Deadline      int64    `bson:"deadline" json:"deadline"`
+	Processes     []string `bson:"processes" json:"processes"`
+	// Resources     []*Resource `bson:"resources" json:"resources"`
 }
 
 type Resource struct {
 	EmployeeID string   `bson:"employee_id" json:"employee_id"`
-	ProccessID []string `bson:"process_id" json:"process_id"`
+	ProcessID  []string `bson:"process_id" json:"process_id"`
 }
 
 func (order *Order) Create() error {
@@ -60,4 +61,31 @@ func GetOrderByID(id string) (*Order, error) {
 	var order *Order
 	var err = orderTable.FindID(id, &order)
 	return order, err
+}
+
+func GetOrderByIDAndEmployee(id string) (interface{}, error) {
+	var result = &struct {
+		ID         string `bson:"_id" json:"id"`
+		Name       string `bson:"name" json:"name"`
+		Deadline   int64  `bson:"deadline" json:"deadline"`
+		CustomerID int64  `bson:"customer_id" json:"customer_id"`
+		Processes  []struct {
+			ID   string `json:"id" bson:"_id"`
+			Name string `json:"name" bson:"name"`
+		} `json:"processes" bson:"processes"`
+	}{}
+	var err = orderTable.Pipe([]bson.M{
+		bson.M{
+			"$match": bson.M{"_id": id},
+		},
+		bson.M{
+			"$lookup": bson.M{
+				"from":         "process",
+				"localField":   "processes",
+				"foreignField": "_id",
+				"as":           "processes",
+			},
+		},
+	}).One(result)
+	return result, err
 }
