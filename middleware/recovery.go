@@ -14,6 +14,7 @@ func RecoveryWithWriter() gin.HandlerFunc {
 		defer func() {
 			if err := recover(); err != nil {
 				if err, same := err.(error); same {
+					panicLog.Error(err)
 					if webError, same := err.(web.IWebError); same {
 						c.AbortWithStatusJSON(webError.StatusCode(), map[string]interface{}{
 							"error":  err.Error(),

@@ -58,7 +58,7 @@ func (s *EmployeeServer) workDone(c *gin.Context) {
 func (s *EmployeeServer) getOrderHistory(c *gin.Context) {
 	var productID = c.Query("product_id")
 	var orderID = c.Query("order_id")
-	var result, err = order_history.GetHistoryByProductID(orderID, productID)
+	var result, err = order_history.GetHistoryByID(orderID, productID)
 	web.AssertNil(err)
 	s.SendData(c, result)
 }

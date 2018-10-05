@@ -23,7 +23,7 @@ func (orderHistory *OrderHistory) Create() error {
 	return orderHistoryTable.Create(orderHistory)
 }
 
-func GetHistoryByProductID(orderID, productID string) ([]*OrderHistory, error) {
+func GetHistoryByID(orderID, productID string) ([]*OrderHistory, error) {
 	var result []*OrderHistory
 	var query = bson.M{}
 	if orderID != "" {
@@ -33,5 +33,29 @@ func GetHistoryByProductID(orderID, productID string) ([]*OrderHistory, error) {
 		query["product_id"] = productID
 	}
 	var err = orderHistoryTable.FindWhere(query, &result)
+	return result, err
+}
+
+func GetTrackingByID(orderID string) (interface{}, error) {
+	var result = []*struct {
+		ProcessID   string `bson:"_id" json:"id"`
+		ProcessName string `bson:"process_name" json:"process_name"`
+		Count       int    `bson:"count" json:"count"`
+	}{}
+	var err = orderHistoryTable.Pipe([]bson.M{
+		bson.M{
+			"$match": bson.M{"order_id": orderID},
+		},
+		bson.M{
+			"$group": bson.M{
+				"_id":          "$process_id",
+				"process_name": bson.M{"$first": "$process_name"},
+				"count":        bson.M{"$sum": 1},
+			},
+		},
+	}).All(&result)
+	if err != nil {
+		orderHistoryLog.Error(err)
+	}
 	return result, err
 }
