@@ -1,4 +1,4 @@
-primeng@6.1.2
+primeng@6.1.4
 MIT
 The MIT License (MIT)
 
@@ -128,10 +128,6 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-
-@firebase/util@0.2.1
-Apache-2.0
-Apache-2.0
 
 @angular/platform-browser@6.1.4
 MIT
@@ -411,7 +407,15 @@ MIT
 MIT
 MIT
 
+@angular/animations@6.1.9
+MIT
+MIT
+
 @firebase/app@0.3.3
+Apache-2.0
+Apache-2.0
+
+@firebase/util@0.2.1
 Apache-2.0
 Apache-2.0
 
